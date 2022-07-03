@@ -1,0 +1,12 @@
+#
+# GLOBAL VARIABLES FOR THE IaC Project
+#
+
+region: eu-west-1
+project_name: learning-warehouse-api
+
+tags:
+  owner: StormRFA
+  project-name: learning-warehouse-api
+  created-by: Terraform
+  stage: development
