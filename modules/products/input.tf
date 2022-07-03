@@ -17,6 +17,13 @@ variable "aws_s3_bucket_lambda_packages" {
   })
 }
 
+variable "aws_api_gateway_warehouse" {
+  type = object({
+    id  = string,
+    arn = string
+  })
+}
+
 variable "aws_iam_policy_products_table_read_write_access" {
   type = object({
     arn = string

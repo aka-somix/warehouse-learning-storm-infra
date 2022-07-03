@@ -33,6 +33,9 @@ inputs = {
   # Bucket for Lambda Packages
   aws_s3_bucket_lambda_packages = dependency.core.outputs.aws_s3_bucket_lambda_packages
 
+  # API Gateway Rest API endpoint
+  aws_api_gateway_warehouse = dependency.core.aws_api_gateway_warehouse
+
   # Dynamodb access table
   aws_iam_policy_products_table_read_write_access = dependency.data.outputs.aws_iam_policy_products_table_read_write_access
 }
