@@ -1,6 +1,6 @@
 
 resource "aws_api_gateway_rest_api" "warehouse" {
-  name = "${var.project_name}-REST"
+  name = "${var.project_name}-API-REST"
 
   body = jsonencode({
     openapi = "3.0.1"
@@ -19,7 +19,7 @@ resource "aws_api_gateway_rest_api" "warehouse" {
 # ---- API Deployment ----
 # Redeploys the API when the body changes (== tied to version)
 #
-resource "aws_api_gateway_deployment" "version_deployment" {
+resource "aws_api_gateway_deployment" "learning" {
   rest_api_id = aws_api_gateway_rest_api.warehouse.id
 
   triggers = {
@@ -36,7 +36,7 @@ resource "aws_api_gateway_deployment" "version_deployment" {
 }
 
 resource "aws_api_gateway_stage" "learning" {
-  deployment_id = aws_api_gateway_deployment.version_deployment.id
+  deployment_id = aws_api_gateway_deployment.learning.id
   rest_api_id   = aws_api_gateway_rest_api.warehouse.id
   stage_name    = "learning"
 }
@@ -75,6 +75,9 @@ resource "aws_api_gateway_integration" "health" {
   resource_id = aws_api_gateway_resource.health.id
   http_method = aws_api_gateway_method.get_health.http_method
   type        = "MOCK"
+  request_templates = {
+    "application/json" = "{ \"statusCode\": 200 }"
+  }
 }
 
 resource "aws_api_gateway_method_response" "health_200" {
@@ -82,4 +85,41 @@ resource "aws_api_gateway_method_response" "health_200" {
   resource_id = aws_api_gateway_resource.health.id
   http_method = aws_api_gateway_method.get_health.http_method
   status_code = "200"
+
+  response_models = {
+    "application/json" = "Empty"
+  }
+
+  depends_on = [
+    aws_api_gateway_model.empty,
+    aws_api_gateway_integration.health
+  ]
+}
+
+resource "aws_api_gateway_model" "empty" {
+  rest_api_id  = aws_api_gateway_rest_api.warehouse.id
+  name         = "Empty"
+  description  = "an Empty JSON schema"
+  content_type = "application/json"
+
+  schema = <<EOF
+{
+  "type": "object"
+}
+EOF
+}
+
+resource "aws_api_gateway_integration_response" "health_200" {
+  rest_api_id = aws_api_gateway_rest_api.warehouse.id
+  resource_id = aws_api_gateway_resource.health.id
+  http_method = aws_api_gateway_method.get_health.http_method
+  status_code = "200"
+
+  response_templates = {
+    "application/json" = ""
+  }
+
+  depends_on = [
+    aws_api_gateway_integration.health
+  ]
 }

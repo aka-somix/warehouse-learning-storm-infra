@@ -44,6 +44,23 @@ resource "aws_iam_role_policy_attachment" "dynamodb_products_access" {
   policy_arn = var.aws_iam_policy_products_table_read_write_access.arn
 }
 
+#
+# -- Resource Policy --
+# Grants access to APIGateway
+#
+resource "aws_lambda_permission" "allow_api_gateway" {
+  function_name = aws_lambda_function.products_handler.arn
+  statement_id  = "AllowExecutionFromApiGateway"
+  action        = "lambda:InvokeFunction"
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${var.aws_api_gateway_warehouse.execution_arn}/*/*/*"
+
+  depends_on = [
+    aws_api_gateway_resource.products_proxy
+  ]
+}
+
 
 #
 # Upload a Dummy Zip with a HelloWorld Lambda

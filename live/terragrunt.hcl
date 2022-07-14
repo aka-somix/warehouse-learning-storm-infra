@@ -13,7 +13,7 @@ remote_state {
   backend = "s3"
   config = {
     encrypt             = true
-    bucket              = "${local.globals.project_name}-terraform-state-${local.globals.region}"  
+    bucket              = "${local.globals.project_name}-terraform-state-${get_aws_account_id()}-${local.globals.region}"  
     key                 = "${path_relative_to_include()}/terraform.tfstate" 
     region              = local.globals.region
     dynamodb_table      = "${local.globals.project_name}-terraform-state"

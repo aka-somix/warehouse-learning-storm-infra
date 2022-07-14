@@ -19,8 +19,10 @@ variable "aws_s3_bucket_lambda_packages" {
 
 variable "aws_api_gateway_warehouse" {
   type = object({
-    id  = string,
-    arn = string
+    id               = string,
+    arn              = string,
+    root_resource_id = string,
+    execution_arn    = string
   })
 }
 

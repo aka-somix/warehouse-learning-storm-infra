@@ -8,7 +8,7 @@
 # zip build to be deployed.
 # 
 resource "aws_s3_bucket" "lambda_packages" {
-  bucket = "${var.project_name}-lambda-packages-${var.region}"
+  bucket = "${var.project_name}-lambda-packages-${var.account_id}-${var.region}"
 
   force_destroy = false
 }

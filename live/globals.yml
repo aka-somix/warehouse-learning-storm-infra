@@ -3,10 +3,10 @@
 #
 
 region: eu-west-1
-project_name: learning-warehouse-api
+project_name: learning-warehouse
 
 tags:
   owner: StormRFA
-  project-name: learning-warehouse-api
+  project-name: learning-warehouse
   created-by: Terraform
   stage: development
