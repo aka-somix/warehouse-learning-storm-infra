@@ -11,14 +11,15 @@ on:
 jobs:
   build-and-upload:
     runs-on: ubuntu-latest
-    # TODO (Salvo): Change image
-    container: akasomix/aws-lambda-ci-pnpm:latest
+    container: alpine/terragrunt:1.2.5
 
     steps:
       - uses: actions/checkout@v3
 
       - name: Deploy to AWS
         run: |
-          echo "Hello World"
-
-          # TODO (Salvo): Expand process to all lambda folders
+          STR='GNU/Linux is an operating system'
+          SUB='Linux'
+          if [[ "$STR" == *"$SUB"* ]]; then
+            echo "It's there."
+          fi
