@@ -18,8 +18,29 @@ jobs:
 
       - name: Deploy to AWS
         run: |
-          STR='GNU/Linux is an operating system'
-          SUB='Linux'
-          if [[ "$STR" == *"$SUB"* ]]; then
-            echo "It's there."
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+
+          if [[ "$COMMIT_MSG" == *"(global)"* ]]; then
+            echo "GLOBAL COMMIT"
+
+          elif [[ "$COMMIT_MSG" == *"(cicd)"* ]]; then
+            echo "CICD Related"
+
+          elif [[ "$COMMIT_MSG" == *"(data)"* ]]; then
+            echo "DATA only updated"
+
+          elif [[ "$COMMIT_MSG" == *"(core)"* ]]; then
+            echo "CORE only updated"
+
+          elif [[ "$COMMIT_MSG" == *"(products)"* ]]; then
+            echo "PRODUCTS only updated"            
+
+          elif [[ "$COMMIT_MSG" == *"(requests)"* ]]; then
+            echo "REQUESTS only updated"            
+
+          elif [[ "$COMMIT_MSG" == *"(loads)"* ]]; then
+            echo "LOADS only updated"            
+          else
+            echo "No Insight Found in Commit Message. Please Parse it following the Guidelines and retry."
+            exit 1
           fi
