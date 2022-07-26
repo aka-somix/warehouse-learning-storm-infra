@@ -11,14 +11,60 @@ on:
 jobs:
   build-and-upload:
     runs-on: ubuntu-latest
-    # TODO (Salvo): Change image
-    container: akasomix/aws-lambda-ci-pnpm:latest
+    container: alpine/terragrunt:1.2.5
 
     steps:
       - uses: actions/checkout@v3
 
       - name: Deploy to AWS
-        run: |
-          echo "Hello World"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
+          AWS_DEFAULT_REGION: eu-west-1
 
-          # TODO (Salvo): Expand process to all lambda folders
+        run: |
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+
+          if [[ "$COMMIT_MSG" == *"(global)"* ]]; then
+            echo "Deploying all modules"
+            cd ./live
+            terragrunt run-all init --terragrunt-non-interactive
+            terragrunt run-all apply --terragrunt-non-interactive
+
+          elif [[ "$COMMIT_MSG" == *"(config)"* ]]; then
+            echo "No need to deploy, only configuration has changed"
+
+          elif [[ "$COMMIT_MSG" == *"(core)"* ]]; then
+            echo "Deploying CORE module"
+            cd ./live/core
+            terragrunt init
+            terragrunt apply --auto-approve
+
+          elif [[ "$COMMIT_MSG" == *"(data)"* ]]; then
+            echo "Deploying DATA module"
+            cd ./live/data
+            terragrunt init
+            terragrunt apply --auto-approve
+
+          elif [[ "$COMMIT_MSG" == *"(products)"* ]]; then
+            echo "Deploying PRODUCTS module"
+            cd ./live/products
+            terragrunt init
+            terragrunt apply --auto-approve
+
+          elif [[ "$COMMIT_MSG" == *"(requests)"* ]]; then
+            echo "Deploying REQUESTS module"
+            cd ./live/requests
+            terragrunt init
+            terragrunt apply --auto-approve
+
+          elif [[ "$COMMIT_MSG" == *"(loads)"* ]]; then
+            echo "Deploying LOADS module"
+            cd ./live/loads
+            terragrunt init
+            terragrunt apply --auto-approve
+
+          else
+            echo "No Insight Found in Commit Message. Please Parse it following the Guidelines and retry."
+            exit 1
+          fi
