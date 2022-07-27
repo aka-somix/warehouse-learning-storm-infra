@@ -39,10 +39,10 @@ EOF
 }
 
 # Lambda Basics Policy (Cloudwatch logs)
-resource "aws_iam_role_policy_attachment" "basic_execution" {
-  role       = aws_iam_role.products_handler.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-}
+# resource "aws_iam_role_policy_attachment" "basic_execution" {
+#   role       = aws_iam_role.products_handler.name
+#   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+# }
 
 # DynamoDB Products Table Policy
 resource "aws_iam_role_policy_attachment" "dynamodb_products_access" {
