@@ -44,6 +44,7 @@ resource "aws_iam_role_policy_attachment" "basic_execution" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+
 # DynamoDB Products Table Policy
 resource "aws_iam_role_policy_attachment" "dynamodb_products_access" {
   role       = aws_iam_role.products_handler.name
