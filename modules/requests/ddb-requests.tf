@@ -7,34 +7,15 @@ resource "aws_dynamodb_table" "warehouse_requests" {
   hash_key     = "UUID"
   range_key    = "Identifier"
 
+
   attribute {
     name = "UUID"
-    type = "S"
-  }
-  attribute {
-    name = "Category"
     type = "S"
   }
 
   attribute {
     name = "Identifier"
     type = "S"
-  }
-  attribute {
-    name = "Boxes"
-    type = "S"
-  }
-  attribute {
-    name = "Name"
-    type = "S"
-  }
-  attribute {
-    name = "Supplier"
-    type = "S"
-  }
-  attribute {
-    name = "Status"
-    type = "B"
   }
 
   ttl {
