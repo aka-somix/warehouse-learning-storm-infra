@@ -54,4 +54,3 @@ data "aws_iam_policy_document" "warehouse_requests_read_access_document" {
     ]
   }
 }
-
