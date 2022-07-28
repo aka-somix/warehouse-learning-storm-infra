@@ -25,3 +25,8 @@ variable "aws_s3_bucket_lambda_packages" {
   })
 }
 
+variable "aws_iam_policy_requests_table_read_write_access" {
+  type = object({
+    arn = string
+  })
+}

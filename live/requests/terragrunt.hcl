@@ -17,6 +17,15 @@ dependency "core" {
 }
 
 
+dependency "data" {
+  config_path = find_in_parent_folders("data")
+  mock_outputs = {
+    aws_iam_policy_requests_table_read_write_access = {}
+  }
+  mock_outputs_allowed_terraform_commands = ["init", "validate"]
+  mock_outputs_merge_with_state = contains(["init", "validate"], get_terraform_command()) ? true : false
+}
+
 
 inputs = {
   # project configuration variables
@@ -29,5 +38,8 @@ inputs = {
 
     # API Gateway Rest API endpoint
   aws_api_gateway_warehouse = dependency.core.outputs.aws_api_gateway_warehouse
+  
+    # Dynamodb access Reuests Table
+  aws_iam_policy_requests_table_read_write_access = dependency.data.outputs.aws_iam_policy_requests_table_read_write_access
 
 }

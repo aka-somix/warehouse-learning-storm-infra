@@ -10,6 +10,10 @@ resource "aws_lambda_function" "requests_handler" {
 
   role = aws_iam_role.requests_handler.arn
 
+  depends_on = [
+    aws_iam_role_policy_attachment.dynamodb_requests_access
+  ]
+
 }
 
 #
@@ -43,6 +47,13 @@ resource "aws_iam_role_policy_attachment" "basic_execution" {
 }
 
 
+# DynamoDB Requests Table Policy
+resource "aws_iam_role_policy_attachment" "dynamodb_requests_access" {
+  role       = aws_iam_role.requests_handler.name
+  policy_arn = var.aws_iam_policy_requests_table_read_write_access.arn
+}
+
+
 
 #
 # -- Resource Policy --
@@ -55,6 +66,10 @@ resource "aws_lambda_permission" "allow_api_gateway" {
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${var.aws_api_gateway_warehouse.execution_arn}/*/*/*"
+
+  depends_on = [
+    aws_api_gateway_resource.requests_proxy
+  ]
 }
 
 
